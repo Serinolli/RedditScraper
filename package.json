@@ -1,0 +1,14 @@
+{
+  "name": "redditscraper",
+  "version": "1.0.0",
+  "description": "A simple way to scrap content from Reddit",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "serinolli",
+  "license": "ISC",
+  "dependencies": {
+    "playwright": "^1.40.0"
+  }
+}
