@@ -46,10 +46,10 @@ async function main() {
             break;
         }
         allPosts = allPosts.concat(pagePosts);
-        let earliestPost = allPosts[allPosts.length - 1];
-        earliest = earliestPost.timestamp;
+        let lastPost = allPosts[allPosts.length - 1];
+        earliest = lastPost.timeStamp;
 
-        if(earliestPost.timestamp < minDate) {
+        if(lastPost.timestamp < minDate) {
             break;
         }
         let nextPageHREF = await page.$eval('.next-button a', (a) => a.href);
