@@ -45,51 +45,6 @@ async function parseComment(e) {
     return comments;
   }
 
-async function getPostData({page,post}) {
-    logger.info("getting posts from actual page...", {post: post});
-
-    await page.goto(post.url);
-
-    const sitetable = await page.$('div.sitetable');
-    const thing = await sitetable.$('.thing');
-
-    let id = post.id;
-    let subreddit = post.subreddit;
-
-    const attributes = await getAttributes(thing);
-    let dataType = attributes["data-type"];
-    let dataURL = attributes["data-url"];
-    let isPromoted = attributes["data-promoted"] === "true";
-    let isGallery = attributes["data-gallery"] === "true";
-    let title = await page.$eval("a.title", (el) => el.innerText);
-    let points = parseInt(await sitetable.$(".score.unvoted").innerText);
-    let text = await sitetable.$("div.usertext-body").innerText;
-
-    let comments = [];
-    try {
-        comments = await parseComment(await page.$("div.commentarea"));
-    } catch (e) {
-        logger.error("error parsing comments", { error: e });
-    }
-
-    return {
-        id,
-        subreddit,
-        dataType,
-        dataURL,
-        isPromoted,
-        isGallery,
-        title,
-        timestamp: post.dt,
-        timestamp_millis: post.timestamp,
-        author: post.author,
-        url: post.url,
-        points: isNaN(points) ? 0 : points,
-        text,
-        comments,
-      };
-}
-
 
 async function getPagePosts(page) {
     logger.info("getting posts from actual page...");
@@ -111,6 +66,11 @@ async function getPagePosts(page) {
         posts.push({id, subReddit, timeStamp, author, url})
     }
     return posts;
+}
+
+async function getPostData({page,post}) {
+    //TODO: Implement a way to summarize the content of the post url
+    return [];
 }
 
 async function main() {
