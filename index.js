@@ -1,51 +1,6 @@
 const playwright = require("playwright");
 const logger = require("./logger");
 
-async function parseComment(e) {
-    const things = await e.$$("> .sitetable > .thing");
-    let comments = [];
-    for (const thing of things) {
-      const attributes = await getAttributes(thing);
-  
-      let thingClass = attributes["class"];
-      let id = attributes["data-fullname"];
-      let children = await parseComment(await thing.$(".child"));
-  
-      let isDeleted = thingClass.includes("deleted");
-      let isCollapsed = thingClass.includes("collapsed");
-      let author = isDeleted ? "" : attributes["data-author"];
-      let time = await thing.$eval("time", (el) => el.getAttribute("datetime"));
-      let comment =
-        isDeleted || isCollapsed
-          ? ""
-          : await thing.$eval("div.md", (el) => el.innerText.trim());
-      let pointsText =
-        isDeleted || isCollapsed
-          ? ""
-          : await thing.$eval(
-              "span.score",
-              (el) => el.innerText.trim().split(" ")[0],
-            );
-  
-      let points = parseInt(pointsText);
-      points = isNaN(points) ? 0 : points;
-  
-      comments.push({
-        id,
-        author,
-        time,
-        comment,
-        points,
-        children,
-        isDeleted,
-        isCollapsed,
-      });
-    }
-  
-    return comments;
-  }
-
-
 async function getPagePosts(page) {
     logger.info("getting posts from actual page...");
     let posts = [];
@@ -72,7 +27,7 @@ async function getPagePosts(page) {
         const author = await element.$eval('.author', (a) => a.innerText);
         const url = await element.getAttribute("data-url");
 
-        posts.push({id, subReddit, timeStamp, author, url, title, upvotes})
+        posts.push({id, subReddit, timeStamp, author, url, title, upvotes, content: "Lorem ipsum"})
     }
     return posts;
 }
