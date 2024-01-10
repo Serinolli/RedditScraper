@@ -58,6 +58,9 @@ async function getPagePosts(page) {
         
         const id = await element.getAttribute("data-fullname");
         const subReddit = await element.getAttribute("data-subreddit-prefixed");
+        const title = await (await element.$$(".entry > .top-matter > .title > a"))[0].evaluate(a => {
+            return a.innerText;
+        });
         const upvotes = await getPostScore(await (element.$$("div.midcol > .unvoted")));
 
         const time = await element.$('time');
@@ -69,12 +72,14 @@ async function getPagePosts(page) {
         const author = await element.$eval('.author', (a) => a.innerText);
         const url = await element.getAttribute("data-url");
 
-        posts.push({id, subReddit, timeStamp, author, url, title:"title", upvotes})
+        posts.push({id, subReddit, timeStamp, author, url, title, upvotes})
     }
     return posts;
 }
 
 async function getPostScore(e) {
+    //Reddit hides upvotes from recent posts to mitigate the bandwagon effect. 
+    //In that case, setting as 0, I will updated later
     return parseInt(await e[0].getAttribute("title")) || 0;
 }
 
