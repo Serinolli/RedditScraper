@@ -16,7 +16,10 @@ async function getPagePosts(page) {
         const title = await (await element.$$(".entry > .top-matter > .title > a"))[0].evaluate(a => {
             return a.innerText;
         });
-        const upvotes = await getPostScore(await (element.$$("div.midcol > .unvoted")));
+
+        //Reddit hides upvotes from recent posts to mitigate the bandwagon effect 
+        //In this case, setting temporarily upvotes as 0
+        const upvotes = await (await (element.$$("div.midcol > .unvoted")))[0].getAttribute("title") || 0;
 
         const time = await element.$('time');
         if(time == null) {
@@ -32,15 +35,9 @@ async function getPagePosts(page) {
     return posts;
 }
 
-async function getPostScore(e) {
-    //Reddit hides upvotes from recent posts to mitigate the bandwagon effect. 
-    //In that case, setting as 0, I will updated later
-    return parseInt(await e[0].getAttribute("title")) || 0;
-}
-
-async function getPostData({page,post}) {
+async function getPostData(url) {
     //TODO: Implement a way to summarize the content of the post url
-    return [];
+    return "";
 }
 
 async function main() {
