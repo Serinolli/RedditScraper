@@ -51,6 +51,11 @@ async function getPagePosts(page) {
     let posts = [];
 
     for(const element of (await page.$$('.thing'))) {
+        const isPromoted = await element.evaluate(b => {
+            return b.classList.contains('promoted');
+        });
+        if(isPromoted) continue;
+        
         const id = await element.getAttribute("data-fullname");
         const subReddit = await element.getAttribute("data-subreddit-prefixed");
         const upvotes = await getPostScore(await (element.$$("div.midcol > .unvoted")));
@@ -64,7 +69,7 @@ async function getPagePosts(page) {
         const author = await element.$eval('.author', (a) => a.innerText);
         const url = await element.getAttribute("data-url");
 
-        posts.push({id, subReddit, timeStamp, author, url})
+        posts.push({id, subReddit, timeStamp, author, url, title:"title", upvotes})
     }
     return posts;
 }
