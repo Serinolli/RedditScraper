@@ -53,6 +53,7 @@ async function getPagePosts(page) {
     for(const element of (await page.$$('.thing'))) {
         const id = await element.getAttribute("data-fullname");
         const subReddit = await element.getAttribute("data-subreddit-prefixed");
+        const upvotes = await getPostScore(await (element.$$("div.midcol > .unvoted")));
 
         const time = await element.$('time');
         if(time == null) {
@@ -66,6 +67,10 @@ async function getPagePosts(page) {
         posts.push({id, subReddit, timeStamp, author, url})
     }
     return posts;
+}
+
+async function getPostScore(e) {
+    return parseInt(await e[0].getAttribute("title")) || 0;
 }
 
 async function getPostData({page,post}) {
