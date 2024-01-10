@@ -1,0 +1,7 @@
+{
+    "hostname": "http://localhost",
+    "port": 8000,
+    "headers": {
+        "Content-Type": "application/json"
+    }
+}

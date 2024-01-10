@@ -1,5 +1,6 @@
 const playwright = require("playwright");
 const logger = require("./logger");
+const postsService = require("./services/posts-service");
 
 async function getPagePosts(page) {
     logger.info("getting posts from actual page...");
@@ -64,13 +65,15 @@ async function main() {
         let lastPost = allPosts[allPosts.length - 1];
         earliest = lastPost.timeStamp;
 
+        postsService.savePosts(pagePosts);
+
         if(lastPost.timestamp < minDate) {
             break;
         }
+
         let nextPageHREF = await page.$eval('.next-button a', (a) => a.href);
         await page.goto(nextPageHREF)
     }
-    allPosts = allPosts.filter((post) => post.timeStamp > minDate);
 
     let data = [];
     logger.info("started getting posts informations...");
