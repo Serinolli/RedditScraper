@@ -65,7 +65,7 @@ async function main() {
         let lastPost = allPosts[allPosts.length - 1];
         earliest = lastPost.timeStamp;
 
-        postService.savePosts(pagePosts);
+        await postService.savePosts(pagePosts);
 
         if(lastPost.timestamp < minDate) {
             break;
