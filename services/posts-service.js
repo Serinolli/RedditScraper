@@ -1,19 +1,18 @@
-const https = require("https");
+const axios = require('axios');
 const config = require("../config/request-settings.json");
+const logger = require("../logger")
 
 function savePosts(posts) {
   const options = { ...config, method: "POST", path: "/posts", data: posts };
+  const url = `${options.host}${options.port}/posts`;
 
-  https
-    .request(options, (resp) => {
-      // log the data
-      resp.on("data", (d) => {
-        console.log(d);
-      });
-    })
-    .on("error", (err) => {
-      console.log("Error: " + err.message);
-    });
+  axios.post(url, posts)
+  .then(response => {
+    logger.info("Teste" + response)
+  })
+  .catch(error => {
+    logger.info("Teste" + error)
+  });
 }
 
 module.exports = {

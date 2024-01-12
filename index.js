@@ -1,6 +1,6 @@
 const playwright = require("playwright");
 const logger = require("./logger");
-const postsService = require("./services/posts-service");
+const postService = require("./services/posts-service");
 
 async function getPagePosts(page) {
     logger.info("getting posts from actual page...");
@@ -65,7 +65,7 @@ async function main() {
         let lastPost = allPosts[allPosts.length - 1];
         earliest = lastPost.timeStamp;
 
-        postsService.savePosts(pagePosts);
+        postService.savePosts(pagePosts);
 
         if(lastPost.timestamp < minDate) {
             break;

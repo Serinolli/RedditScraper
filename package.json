@@ -10,6 +10,7 @@
   "author": "serinolli",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.6.5",
     "playwright": "^1.40.0",
     "winston": "^3.11.0"
   }
