@@ -31,7 +31,9 @@ async function getPagePosts(page) {
         const author = await element.$eval('.author', (a) => a.innerText);
         const url = await element.getAttribute("data-url");
 
-        posts.push({id, subReddit, timeStamp, author, url, title, upvotes, content: "Lorem ipsum"})
+        const post = {id, subReddit, timeStamp, author, url, title, upvotes}
+        logger.info(JSON.stringify(post));
+        posts.push(post)
     }
     return posts;
 }
@@ -65,7 +67,8 @@ async function main() {
         let lastPost = allPosts[allPosts.length - 1];
         earliest = lastPost.timeStamp;
 
-        await postService.savePosts(pagePosts);
+        //The line below sends a save posts request to the API, commented out to avoid breaking the app while the API is being built.
+        //await postService.savePosts(pagePosts);
 
         if(lastPost.timestamp < minDate) {
             break;
@@ -75,12 +78,11 @@ async function main() {
         await page.goto(nextPageHREF)
     }
 
-    let data = [];
     logger.info("started getting posts informations...");
-    for (const post of allPosts) {
-        let postData = await getPostData({post,page});
-        data.push(postData);
+    for (let i = 0; i < allPosts.length; i++) {
+        allPosts[i].content = await getPostData(allPosts[i].url);
     }
+    logger.info("The posts from yesterday to this moment have been analyzed")
     await broswer.close();
 }
 
