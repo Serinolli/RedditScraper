@@ -7,11 +7,11 @@ async function savePosts(posts) {
   const url = `${options.host}${options.port}${options.path}`;
 
   await axios.post(url, posts)
-  .then(response => {
-    logger.info("Success! " + response)
+  .then(() => {
+    logger.info("Page posts analyzed successfully...")
   })
-  .catch(error => {
-    logger.info("Error! " + error)
+  .catch(() => {
+    logger.info("Error while trying to analyze page posts ")
   });
 }
 

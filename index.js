@@ -32,7 +32,6 @@ async function getPagePosts(page) {
         const url = await element.getAttribute("data-url");
 
         const post = {postId, subReddit, timeStamp, author, url, title, upvotes}
-        logger.info(JSON.stringify(post));
         posts.push(post)
     }
     return posts;
