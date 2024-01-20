@@ -12,7 +12,7 @@ async function getPagePosts(page) {
         });
         if(isPromoted) continue;
         
-        const id = await element.getAttribute("data-fullname");
+        const postId = await element.getAttribute("data-fullname");
         const subReddit = await element.getAttribute("data-subreddit-prefixed");
         const title = await (await element.$$(".entry > .top-matter > .title > a"))[0].evaluate(a => {
             return a.innerText;
@@ -20,7 +20,7 @@ async function getPagePosts(page) {
 
         //Reddit hides upvotes from recent posts to mitigate the bandwagon effect 
         //In this case, setting temporarily upvotes as 0
-        const upvotes = await (await (element.$$("div.midcol > .unvoted")))[0].getAttribute("title") || 0;
+        const upvotes = parseInt(await (await (element.$$("div.midcol > .unvoted")))[0].getAttribute("title") || '0');
 
         const time = await element.$('time');
         if(time == null) {
@@ -31,7 +31,7 @@ async function getPagePosts(page) {
         const author = await element.$eval('.author', (a) => a.innerText);
         const url = await element.getAttribute("data-url");
 
-        const post = {id, subReddit, timeStamp, author, url, title, upvotes}
+        const post = {postId, subReddit, timeStamp, author, url, title, upvotes}
         logger.info(JSON.stringify(post));
         posts.push(post)
     }
@@ -67,8 +67,7 @@ async function main() {
         let lastPost = allPosts[allPosts.length - 1];
         earliest = lastPost.timeStamp;
 
-        //The line below sends a save posts request to the API, commented out to avoid breaking the app while the API is being built.
-        //await postService.savePosts(pagePosts);
+        await postService.savePosts(pagePosts);
 
         if(lastPost.timestamp < minDate) {
             break;
