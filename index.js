@@ -37,9 +37,15 @@ async function getPagePosts(page) {
     return posts;
 }
 
-async function getPostData(url) {
-    //TODO: Implement a way to summarize the content of the post url
-    return "";
+async function getPostData(page, url) {
+    try {
+        await page.goto(url);
+        logger.info("Connected to '" + url + "'");
+        const pageContent = await page.evaluate(() => document.body.textContent);
+        return "";
+    } catch {
+        return "";
+    }    
 }
 
 async function main() {
@@ -78,7 +84,7 @@ async function main() {
 
     logger.info("started getting posts informations...");
     for (let i = 0; i < allPosts.length; i++) {
-        allPosts[i].content = await getPostData(allPosts[i].url);
+        allPosts[i].content = await getPostData(page, allPosts[i].url);
     }
     logger.info("The posts from yesterday to this moment have been analyzed")
     await broswer.close();
