@@ -1,7 +1,12 @@
 {
-    "host": "http://127.0.0.1:",
-    "port": 8000,
-    "headers": {
-        "Content-Type": "application/json"
-    }
+	"API": {
+		"host": "http://127.0.0.1:",
+		"port": 8000,
+		"headers": {
+			"Content-Type": "application/json"
+		}
+	},
+	"OpenAI": {
+		"KEY": "you_openai_api_key"
+	}
 }
