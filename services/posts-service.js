@@ -1,5 +1,5 @@
 const axios = require('axios');
-const config = require("../config/request-settings.json");
+const config = require("../config/request-settings.json").API;
 const logger = require("../logger")
 
 async function savePosts(posts) {

@@ -1,6 +1,7 @@
 const playwright = require("playwright");
 const logger = require("./logger");
 const postService = require("./services/posts-service");
+const openAIService = require("./services/openai-service")
 
 async function getPagePosts(page) {
     logger.info("getting posts from actual page...");
@@ -41,7 +42,8 @@ async function getPostData(page, url) {
     try {
         await page.goto(url);
         logger.info("Connected to '" + url + "'");
-        const pageContent = await page.evaluate(() => document.body.textContent);
+        const brutePageContent = await page.evaluate(() => document.body.textContent);
+        //await openAIService.getPageContent(brutePageContent)
         return "";
     } catch {
         return "";
