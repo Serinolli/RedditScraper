@@ -84,9 +84,9 @@ async function main() {
     }
 
     logger.info("started getting posts informations...");
-    for (let i = 0; i < allPosts.length; i++) {
+    /*for (let i = 0; i < allPosts.length; i++) {
         allPosts[i].content = await getPostData(page, allPosts[i].url);
-    }
+    }*/
     logger.info("The posts from yesterday to this moment have been analyzed")
     await broswer.close();
 }
