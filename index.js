@@ -43,8 +43,7 @@ async function getPostData(page, url) {
         await page.goto(url);
         logger.info("Connected to '" + url + "'");
         const brutePageContent = await page.evaluate(() => document.body.textContent);
-        //await openAIService.getPageContent(brutePageContent)
-        return "";
+        return await openAIService.getPageContent(brutePageContent)
     } catch {
         return "";
     }    
