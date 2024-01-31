@@ -28,11 +28,11 @@ async function getPagePosts(page) {
             continue;
         }
 
-        const timeStamp = Date.parse(await time.getAttribute('datetime'));
+        const createdAt = new Date(await time.getAttribute('datetime'));
         const author = await element.$eval('.author', (a) => a.innerText);
         const url = await element.getAttribute("data-url");
 
-        const post = {postId, subReddit, timeStamp, author, url, title, upvotes}
+        const post = {postId, subReddit, createdAt, author, url, title, upvotes}
         posts.push(post)
     }
     return posts;
@@ -71,11 +71,11 @@ async function main() {
         }
         allPosts = allPosts.concat(pagePosts);
         let lastPost = allPosts[allPosts.length - 1];
-        earliest = lastPost.timeStamp;
+        earliest = lastPost.createdAt;
 
         await postService.savePosts(pagePosts);
 
-        if(lastPost.timestamp < minDate) {
+        if(lastPost.createdAt < minDate) {
             break;
         }
 
